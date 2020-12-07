@@ -1,0 +1,505 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OnlineVotingSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblCandidate">
+          <Key>
+            <PropertyRef Name="CandidateId" />
+          </Key>
+          <Property Name="CandidateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CandidateName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ElectionId" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="50" />
+          <Property Name="VoteObtained" Type="int" />
+        </EntityType>
+        <EntityType Name="tblElection">
+          <Key>
+            <PropertyRef Name="ElectionId" />
+          </Key>
+          <Property Name="ElectionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ElectionName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ElectionStartDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="ElectionEndDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="NoOfCandidate" Type="int" />
+        </EntityType>
+        <EntityType Name="tblIdRequest">
+          <Key>
+            <PropertyRef Name="IdRequestId" />
+          </Key>
+          <Property Name="IdRequestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserId" Type="int" />
+        </EntityType>
+        <EntityType Name="tblResult">
+          <Key>
+            <PropertyRef Name="VoteId" />
+          </Key>
+          <Property Name="VoteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CandidateId" Type="int" />
+          <Property Name="ElectionId" Type="int" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fullname" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailVerification" Type="bit" />
+          <Property Name="ActivationCode" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="tblUserRole">
+          <Key>
+            <PropertyRef Name="UserRoleId" />
+          </Key>
+          <Property Name="UserRoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="RoleId" Type="int" />
+        </EntityType>
+        <Association Name="FK_tblCandidate_tblElection">
+          <End Role="tblElection" Type="Self.tblElection" Multiplicity="0..1" />
+          <End Role="tblCandidate" Type="Self.tblCandidate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblElection">
+              <PropertyRef Name="ElectionId" />
+            </Principal>
+            <Dependent Role="tblCandidate">
+              <PropertyRef Name="ElectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblIdRequest_tblUser">
+          <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
+          <End Role="tblIdRequest" Type="Self.tblIdRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="tblIdRequest">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblResult_tblCandidate">
+          <End Role="tblCandidate" Type="Self.tblCandidate" Multiplicity="0..1" />
+          <End Role="tblResult" Type="Self.tblResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCandidate">
+              <PropertyRef Name="CandidateId" />
+            </Principal>
+            <Dependent Role="tblResult">
+              <PropertyRef Name="CandidateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblResult_tblElection">
+          <End Role="tblElection" Type="Self.tblElection" Multiplicity="0..1" />
+          <End Role="tblResult" Type="Self.tblResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblElection">
+              <PropertyRef Name="ElectionId" />
+            </Principal>
+            <Dependent Role="tblResult">
+              <PropertyRef Name="ElectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblResult_tblUser">
+          <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
+          <End Role="tblResult" Type="Self.tblResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="tblResult">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserRole_tblRole">
+          <End Role="tblRole" Type="Self.tblRole" Multiplicity="0..1" />
+          <End Role="tblUserRole" Type="Self.tblUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRole">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="tblUserRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserRole_tblUser">
+          <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
+          <End Role="tblUserRole" Type="Self.tblUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="tblUserRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OnlineVotingSystemModelStoreContainer">
+          <EntitySet Name="tblCandidate" EntityType="Self.tblCandidate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblElection" EntityType="Self.tblElection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblIdRequest" EntityType="Self.tblIdRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblResult" EntityType="Self.tblResult" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRole" EntityType="Self.tblRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserRole" EntityType="Self.tblUserRole" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblCandidate_tblElection" Association="Self.FK_tblCandidate_tblElection">
+            <End Role="tblElection" EntitySet="tblElection" />
+            <End Role="tblCandidate" EntitySet="tblCandidate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblIdRequest_tblUser" Association="Self.FK_tblIdRequest_tblUser">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblIdRequest" EntitySet="tblIdRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblResult_tblCandidate" Association="Self.FK_tblResult_tblCandidate">
+            <End Role="tblCandidate" EntitySet="tblCandidate" />
+            <End Role="tblResult" EntitySet="tblResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblResult_tblElection" Association="Self.FK_tblResult_tblElection">
+            <End Role="tblElection" EntitySet="tblElection" />
+            <End Role="tblResult" EntitySet="tblResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblResult_tblUser" Association="Self.FK_tblResult_tblUser">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblResult" EntitySet="tblResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserRole_tblRole" Association="Self.FK_tblUserRole_tblRole">
+            <End Role="tblRole" EntitySet="tblRole" />
+            <End Role="tblUserRole" EntitySet="tblUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserRole_tblUser" Association="Self.FK_tblUserRole_tblUser">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblUserRole" EntitySet="tblUserRole" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OnlineVotingSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="OnlineVotingSystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblRoles" EntityType="OnlineVotingSystemModel.tblRole" />
+          <EntitySet Name="tblUserRoles" EntityType="OnlineVotingSystemModel.tblUserRole" />
+          <AssociationSet Name="FK_tblUserRole_tblRole" Association="OnlineVotingSystemModel.FK_tblUserRole_tblRole">
+            <End Role="tblRole" EntitySet="tblRoles" />
+            <End Role="tblUserRole" EntitySet="tblUserRoles" />
+          </AssociationSet>
+          <EntitySet Name="tblElections" EntityType="OnlineVotingSystemModel.tblElection" />
+          <EntitySet Name="tblCandidates" EntityType="OnlineVotingSystemModel.tblCandidate" />
+          <AssociationSet Name="FK_tblCandidate_tblElection" Association="OnlineVotingSystemModel.FK_tblCandidate_tblElection">
+            <End Role="tblElection" EntitySet="tblElections" />
+            <End Role="tblCandidate" EntitySet="tblCandidates" />
+          </AssociationSet>
+          <EntitySet Name="tblResults" EntityType="OnlineVotingSystemModel.tblResult" />
+          <AssociationSet Name="FK_tblResult_tblCandidate" Association="OnlineVotingSystemModel.FK_tblResult_tblCandidate">
+            <End Role="tblCandidate" EntitySet="tblCandidates" />
+            <End Role="tblResult" EntitySet="tblResults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblResult_tblElection" Association="OnlineVotingSystemModel.FK_tblResult_tblElection">
+            <End Role="tblElection" EntitySet="tblElections" />
+            <End Role="tblResult" EntitySet="tblResults" />
+          </AssociationSet>
+          <EntitySet Name="tblUsers" EntityType="OnlineVotingSystemModel.tblUser" />
+          <AssociationSet Name="FK_tblResult_tblUser" Association="OnlineVotingSystemModel.FK_tblResult_tblUser">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblResult" EntitySet="tblResults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserRole_tblUser" Association="OnlineVotingSystemModel.FK_tblUserRole_tblUser">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblUserRole" EntitySet="tblUserRoles" />
+          </AssociationSet>
+          <EntitySet Name="tblIdRequests" EntityType="OnlineVotingSystemModel.tblIdRequest" />
+          <AssociationSet Name="FK_tblIdRequest_tblUser" Association="OnlineVotingSystemModel.FK_tblIdRequest_tblUser">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblIdRequest" EntitySet="tblIdRequests" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="tblRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblUserRoles" Relationship="OnlineVotingSystemModel.FK_tblUserRole_tblRole" FromRole="tblRole" ToRole="tblUserRole" />
+        </EntityType>
+        <EntityType Name="tblUserRole">
+          <Key>
+            <PropertyRef Name="UserRoleId" />
+          </Key>
+          <Property Name="UserRoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="RoleId" Type="Int32" />
+          <NavigationProperty Name="tblRole" Relationship="OnlineVotingSystemModel.FK_tblUserRole_tblRole" FromRole="tblUserRole" ToRole="tblRole" />
+          <NavigationProperty Name="tblUser" Relationship="OnlineVotingSystemModel.FK_tblUserRole_tblUser" FromRole="tblUserRole" ToRole="tblUser" />
+        </EntityType>
+        <Association Name="FK_tblUserRole_tblRole">
+          <End Type="OnlineVotingSystemModel.tblRole" Role="tblRole" Multiplicity="0..1" />
+          <End Type="OnlineVotingSystemModel.tblUserRole" Role="tblUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRole">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="tblUserRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblElection">
+          <Key>
+            <PropertyRef Name="ElectionId" />
+          </Key>
+          <Property Name="ElectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ElectionName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ElectionStartDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ElectionEndDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NoOfCandidate" Type="Int32" />
+          <NavigationProperty Name="tblCandidates" Relationship="OnlineVotingSystemModel.FK_tblCandidate_tblElection" FromRole="tblElection" ToRole="tblCandidate" />
+          <NavigationProperty Name="tblResults" Relationship="OnlineVotingSystemModel.FK_tblResult_tblElection" FromRole="tblElection" ToRole="tblResult" />
+          </EntityType>
+        <EntityType Name="tblCandidate">
+          <Key>
+            <PropertyRef Name="CandidateId" />
+          </Key>
+          <Property Name="CandidateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CandidateName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ElectionId" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VoteObtained" Type="Int32" />
+          <NavigationProperty Name="tblElection" Relationship="OnlineVotingSystemModel.FK_tblCandidate_tblElection" FromRole="tblCandidate" ToRole="tblElection" />
+          <NavigationProperty Name="tblResults" Relationship="OnlineVotingSystemModel.FK_tblResult_tblCandidate" FromRole="tblCandidate" ToRole="tblResult" />
+        </EntityType>
+        <Association Name="FK_tblCandidate_tblElection">
+          <End Type="OnlineVotingSystemModel.tblElection" Role="tblElection" Multiplicity="0..1" />
+          <End Type="OnlineVotingSystemModel.tblCandidate" Role="tblCandidate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblElection">
+              <PropertyRef Name="ElectionId" />
+            </Principal>
+            <Dependent Role="tblCandidate">
+              <PropertyRef Name="ElectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblResult">
+          <Key>
+            <PropertyRef Name="VoteId" />
+          </Key>
+          <Property Name="VoteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CandidateId" Type="Int32" />
+          <Property Name="ElectionId" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblCandidate" Relationship="OnlineVotingSystemModel.FK_tblResult_tblCandidate" FromRole="tblResult" ToRole="tblCandidate" />
+          <NavigationProperty Name="tblElection" Relationship="OnlineVotingSystemModel.FK_tblResult_tblElection" FromRole="tblResult" ToRole="tblElection" />
+          <NavigationProperty Name="tblUser" Relationship="OnlineVotingSystemModel.FK_tblResult_tblUser" FromRole="tblResult" ToRole="tblUser" />
+        </EntityType>
+        <Association Name="FK_tblResult_tblCandidate">
+          <End Type="OnlineVotingSystemModel.tblCandidate" Role="tblCandidate" Multiplicity="0..1" />
+          <End Type="OnlineVotingSystemModel.tblResult" Role="tblResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCandidate">
+              <PropertyRef Name="CandidateId" />
+            </Principal>
+            <Dependent Role="tblResult">
+              <PropertyRef Name="CandidateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblResult_tblElection">
+          <End Type="OnlineVotingSystemModel.tblElection" Role="tblElection" Multiplicity="0..1" />
+          <End Type="OnlineVotingSystemModel.tblResult" Role="tblResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblElection">
+              <PropertyRef Name="ElectionId" />
+            </Principal>
+            <Dependent Role="tblResult">
+              <PropertyRef Name="ElectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fullname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailVerification" Type="Boolean" />
+          <Property Name="ActivationCode" Type="Guid" />
+          <NavigationProperty Name="tblResults" Relationship="OnlineVotingSystemModel.FK_tblResult_tblUser" FromRole="tblUser" ToRole="tblResult" />
+          <NavigationProperty Name="tblUserRoles" Relationship="OnlineVotingSystemModel.FK_tblUserRole_tblUser" FromRole="tblUser" ToRole="tblUserRole" />
+          <NavigationProperty Name="tblIdRequests" Relationship="OnlineVotingSystemModel.FK_tblIdRequest_tblUser" FromRole="tblUser" ToRole="tblIdRequest" />
+        </EntityType>
+        <Association Name="FK_tblResult_tblUser">
+          <End Type="OnlineVotingSystemModel.tblUser" Role="tblUser" Multiplicity="0..1" />
+          <End Type="OnlineVotingSystemModel.tblResult" Role="tblResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="tblResult">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserRole_tblUser">
+          <End Type="OnlineVotingSystemModel.tblUser" Role="tblUser" Multiplicity="0..1" />
+          <End Type="OnlineVotingSystemModel.tblUserRole" Role="tblUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="tblUserRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblIdRequest">
+          <Key>
+            <PropertyRef Name="IdRequestId" />
+          </Key>
+          <Property Name="IdRequestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="tblUser" Relationship="OnlineVotingSystemModel.FK_tblIdRequest_tblUser" FromRole="tblIdRequest" ToRole="tblUser" />
+        </EntityType>
+        <Association Name="FK_tblIdRequest_tblUser">
+          <End Type="OnlineVotingSystemModel.tblUser" Role="tblUser" Multiplicity="0..1" />
+          <End Type="OnlineVotingSystemModel.tblIdRequest" Role="tblIdRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="tblIdRequest">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OnlineVotingSystemModelStoreContainer" CdmEntityContainer="OnlineVotingSystemEntities">
+          <EntitySetMapping Name="tblRoles">
+            <EntityTypeMapping TypeName="OnlineVotingSystemModel.tblRole">
+              <MappingFragment StoreEntitySet="tblRole">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserRoles">
+            <EntityTypeMapping TypeName="OnlineVotingSystemModel.tblUserRole">
+              <MappingFragment StoreEntitySet="tblUserRole">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserRoleId" ColumnName="UserRoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblElections">
+            <EntityTypeMapping TypeName="OnlineVotingSystemModel.tblElection">
+              <MappingFragment StoreEntitySet="tblElection">
+                <ScalarProperty Name="NoOfCandidate" ColumnName="NoOfCandidate" />
+                <ScalarProperty Name="ElectionEndDate" ColumnName="ElectionEndDate" />
+                <ScalarProperty Name="ElectionStartDate" ColumnName="ElectionStartDate" />
+                <ScalarProperty Name="ElectionName" ColumnName="ElectionName" />
+                <ScalarProperty Name="ElectionId" ColumnName="ElectionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCandidates">
+            <EntityTypeMapping TypeName="OnlineVotingSystemModel.tblCandidate">
+              <MappingFragment StoreEntitySet="tblCandidate">
+                <ScalarProperty Name="VoteObtained" ColumnName="VoteObtained" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ElectionId" ColumnName="ElectionId" />
+                <ScalarProperty Name="CandidateName" ColumnName="CandidateName" />
+                <ScalarProperty Name="CandidateId" ColumnName="CandidateId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblResults">
+            <EntityTypeMapping TypeName="OnlineVotingSystemModel.tblResult">
+              <MappingFragment StoreEntitySet="tblResult">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ElectionId" ColumnName="ElectionId" />
+                <ScalarProperty Name="CandidateId" ColumnName="CandidateId" />
+                <ScalarProperty Name="VoteId" ColumnName="VoteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUsers">
+            <EntityTypeMapping TypeName="OnlineVotingSystemModel.tblUser">
+              <MappingFragment StoreEntitySet="tblUser">
+                <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
+                <ScalarProperty Name="EmailVerification" ColumnName="EmailVerification" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Fullname" ColumnName="Fullname" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblIdRequests">
+            <EntityTypeMapping TypeName="OnlineVotingSystemModel.tblIdRequest">
+              <MappingFragment StoreEntitySet="tblIdRequest">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="IdRequestId" ColumnName="IdRequestId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

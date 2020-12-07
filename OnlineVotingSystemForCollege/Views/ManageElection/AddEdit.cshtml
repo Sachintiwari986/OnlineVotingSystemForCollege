@@ -1,0 +1,50 @@
+﻿@model OnlineVotingSystemForCollege.Models.ViewModel.ElectionViewModel
+@{
+    Layout = null;
+}
+    <form name="ElectionForm">
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>@ViewBag.Action</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ElectionId)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ElectionName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.ElectionName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ElectionName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ElectionStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ElectionStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ElectionStartDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ElectionEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+               
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ElectionEndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ElectionEndDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+
+                    <button type="button" class="btn btn-info" onclick="createOrUpdate()">SUBMIT</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">CANCEL</button>
+                </div>
+            </div>
+            </div>
+
+
+</form>

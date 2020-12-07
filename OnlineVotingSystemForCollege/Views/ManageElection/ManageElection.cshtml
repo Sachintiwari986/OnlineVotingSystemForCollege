@@ -1,0 +1,223 @@
+﻿
+@{
+    ViewBag.Title = "ManageElection";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section breadcumb1
+{
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">ManageElection</li>
+    </ol>
+}
+@section breadcumb2
+{
+    <div class="col-lg-12">
+        <h1 class="page-header">Election</h1>
+    </div>
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <ul class="pull-right">
+            <li style="list-style:none">   <a class="btn btn-info" style="margin-bottom:10px" onclick="AddEditElection(0)"><i class="fa fa-plus"></i> Add New</a> </li>
+        </ul>
+
+    </div>
+    <div class="panel-body">
+
+
+        <table id="Electiontable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <td>ElectionId</td>
+                    <td>ElectionName</td>
+                    <td>ElectionStartDate</td>
+                    <td>ElectionEndDate</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td>ElectionId</td>
+                    <td>ElectionName</td>
+                    <td>ElectionStartDate</td>
+                    <td>ElectionEndDate</td>
+                    <td>Action</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="modal fade" id="ElectionModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="ElectionModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 id="title" class="modal-title">Add Edit Election</h4>
+                    </div>
+                    <div class="modal-body mb-1" id="mymodalbody">
+
+
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!--Normal -->
+        @*<link href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" />
+            jQuery ThemeRoller*@
+        @*<link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+            <link href="https://cdn.datatables.net/1.10.15/css/dataTables.jqueryui.min.css" rel="stylesheet" />*@
+        <!-- Semantic UI -->
+        @*<link href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css" rel="stylesheet" />
+            <link href="https://cdn.datatables.net/1.10.15/css/dataTables.semanticui.min.css" rel="stylesheet" />*@
+        <!-- Bootstrap 4 -->
+        @*<link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css" rel="stylesheet" />*@
+
+        @section scripts
+{
+            @*Normal
+                <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>*@
+
+            @* jQuery ThemeRoller*@
+            @*<script src="https://cdn.datatables.net/1.10.15/js/dataTables.jqueryui.min.js"></script>*@
+
+            @* Semantic UI*@
+            @*<script src="https://cdn.datatables.net/1.10.15/js/dataTables.semanticui.min.js"></script>
+                <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>*@
+
+            @* Bootstrap 4*@
+            @*<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css" rel="stylesheet" />
+                <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>*@
+
+            <script>
+        $(document).ready(function () {
+            $("#Electiontable").DataTable(
+                {
+                    "ajax": {
+
+                        "url": "/ManageElection/ListElection",
+                        "type": "GET",
+                        "datatype": "json"
+
+                    },
+                    "columns": [
+
+                        { "data": "ElectionId" },
+                        {
+                            "data": "ElectionName" },
+                        {
+                            "data": "ElectionStartDate"
+                        },
+                          
+                   
+                        {
+                            "data": "ElectionEndDate",
+                             
+                        },
+                        {
+                            "data": "ElectionId",
+                            "render": function (ElectionId, type, full, meta) {
+
+                                return '<a href="#" class="btn btn-success" onclick="AddEditElection(' + ElectionId + ')"><i class="fas fa-pencil" aria-hidden="true"></i>Edit </a><a href="#" class="btn btn-danger" onclick="Delete(' + ElectionId + ')"><i class="fas fa-trash" aria-hidden="true"></i>Delete </a>'
+                            }
+                        },
+                    ]
+
+
+
+
+
+
+                });
+        });
+
+        function AddEditElection(id) {
+            $.get("/ManageElection/AddEdit", { id: id }, function (res) {
+
+                $("#mymodalbody").html(res);
+                $("#ElectionModal").modal("show");
+
+
+            })
+        }
+            function Delete(id) {
+            if(confirm('Are You Sure to Delete this Election?'))
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Delete","ManageElection")/' + id,
+                    success: function (data) {
+                        if (data.success)
+                        {
+                            $("#Electiontable").DataTable().ajax.reload()
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+
+                        }
+                    }
+
+                });
+            }
+        }
+         function createOrUpdate() {
+
+            var form = $('form[name="ElectionForm"]');
+            form.validate();
+            if (!form.valid()) {
+                return;
+            }
+
+            else {
+
+                var efvvObject =
+
+                {
+                    ElectionId: $('#ElectionId').val(),
+                    ElectionName: $('#ElectionName').val(),
+                    ElectionStartDate: $('#ElectionStartDate').val(),
+                    ElectionEndDate: $('#ElectionEndDate').val(),
+
+
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/ManageElection/AddEdit",
+                    data: JSON.stringify(efvvObject),
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#ElectionModal").modal("hide");
+                        $('#Electiontable').DataTable().ajax.reload();
+                        if (data.success) {
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+
+                        }
+                    }
+                });
+            }
+        }
+            </script>
+        }
+
+
+
+    </div>
+</div>
+

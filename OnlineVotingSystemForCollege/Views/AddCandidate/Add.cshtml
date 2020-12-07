@@ -1,0 +1,117 @@
+﻿@model OnlineVotingSystemForCollege.Models.ViewModel.CandidateViewModel
+
+
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+
+    function Showimagepreview1(input) {
+        if (input.files && input.files[0]) {
+            var filerdr = new FileReader();
+            filerdr.onload = function (e) {
+                $('#smimg').attr('src', e.target.result);
+            }
+            filerdr.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+@section breadcumb1
+{
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">ManageProduct</li>
+    </ol>
+}
+@section breadcumb2
+{
+    <div class="col-lg-12">
+        <h1 class="page-header">Product</h1>
+    </div>
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <ul class="pull-right">
+            <li style="list-style:none">   <a class="btn btn-info" style="margin-bottom:10px" onclick="AddEditCategory(0)"><i class="fa fa-plus"></i> Add New</a> </li>
+        </ul>
+
+    </div>
+    <div class="panel-body">
+        <div class="canvas-wrapper">
+
+
+            @using (Html.BeginForm("Add", "AddCandidate", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>Add Candidate</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.CandidateId)
+                @Html.HiddenFor(model => model.ElectionId)
+
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ElectionName, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ElectionName, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.ElectionName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CandidateName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CandidateName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CandidateName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Photo, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.HiddenFor(model => model.Photo)
+                    <div class="col-md-10">
+                        <img id="smimg" src="~/CandidateImages/@Model.Photo" height="100" width="90" />
+                        @Html.TextBoxFor(model => model.Photo, new { @class = "form-control", @Type = "file", @onchange = "Showimagepreview1(this)" })
+                        @Html.ValidationMessageFor(model => model.Photo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+
+            }
+
+
+
+        </div>
+    </div>
+</div>
+    
+
+

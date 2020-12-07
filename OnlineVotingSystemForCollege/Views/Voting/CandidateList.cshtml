@@ -1,0 +1,92 @@
+﻿@model IEnumerable<OnlineVotingSystemForCollege.Models.ViewModel.CandidateViewModel>
+
+@{
+    ViewBag.Title = "CandidateList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section breadcumb1
+{
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Vote</li>
+    </ol>
+}
+@section breadcumb2
+{
+    <div class="col-lg-12">
+        <h1 class="page-header">List Of Election</h1>
+    </div>
+}
+<div class="panel panel-default">
+
+    <div class="panel-body">
+        @if (Model != null)
+        {
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CandidateId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CandidateName)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.ElectionName)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Photo)
+                    </th>
+                    <th>Action</th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CandidateId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CandidateName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ElectionName)
+                        </td>
+
+                        <td>
+                            <img src="~/CandidateImages/@item.Photo" alt="" height=100 width=200 />
+                        </td>
+
+                        <td>
+                            @Html.ActionLink("Vote", "Voted", new { id=item.CandidateId})
+                          
+
+
+                        </td>
+                    </tr>
+                }
+
+
+
+
+
+
+
+
+            </table>
+        }
+
+        else
+        {
+          <h1 class="text-info text-capitalize">@ViewBag.Action</h1>
+        }
+    </div>
+</div>

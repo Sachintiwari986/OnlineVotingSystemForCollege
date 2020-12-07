@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="098c5a6b8ed74fc09b7f5ef0e0ea6028" Name="Diagram1">
+        <EntityTypeShape EntityType="OnlineVotingSystemModel.tblRole" Width="1.5" PointX="0.75" PointY="5.25" />
+        <EntityTypeShape EntityType="OnlineVotingSystemModel.tblUserRole" Width="1.5" PointX="3" PointY="1" />
+        <AssociationConnector Association="OnlineVotingSystemModel.FK_tblUserRole_tblRole" />
+        <EntityTypeShape EntityType="OnlineVotingSystemModel.tblElection" Width="1.5" PointX="3.375" PointY="3.875" />
+        <EntityTypeShape EntityType="OnlineVotingSystemModel.tblCandidate" Width="1.5" PointX="5.625" PointY="3.75" />
+        <AssociationConnector Association="OnlineVotingSystemModel.FK_tblCandidate_tblElection" />
+        <EntityTypeShape EntityType="OnlineVotingSystemModel.tblResult" Width="1.5" PointX="7.875" PointY="2.375" />
+        <AssociationConnector Association="OnlineVotingSystemModel.FK_tblResult_tblCandidate" />
+        <AssociationConnector Association="OnlineVotingSystemModel.FK_tblResult_tblElection" />
+        <EntityTypeShape EntityType="OnlineVotingSystemModel.tblUser" Width="1.5" PointX="0.75" PointY="1.625" />
+        <AssociationConnector Association="OnlineVotingSystemModel.FK_tblResult_tblUser" />
+        <AssociationConnector Association="OnlineVotingSystemModel.FK_tblUserRole_tblUser" />
+        <EntityTypeShape EntityType="OnlineVotingSystemModel.tblIdRequest" Width="1.5" PointX="3" PointY="7.125" />
+        <AssociationConnector Association="OnlineVotingSystemModel.FK_tblIdRequest_tblUser" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
