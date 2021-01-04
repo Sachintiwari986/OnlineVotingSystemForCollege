@@ -68,9 +68,13 @@ namespace OnlineVotingSystemForCollege.Controllers
                 var result = db.tblResults.Where(a => a.UserId == id).ToList();
                 foreach (var item in result)
                 {
+                    var VoteObtained = db.tblCandidates.Where(a => a.CandidateId == item.CandidateId).Select(a => a.VoteObtained).FirstOrDefault();
+                    tblCandidate tbc = db.tblCandidates.Where(a => a.CandidateId == item.CandidateId).FirstOrDefault();
+                    tbc.VoteObtained = VoteObtained - 1;
                     db.tblResults.Remove(item);
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
+              
 
                 var tb= db.tblUserRoles.Where(x => x.UserId == id).FirstOrDefault();
                 db.tblUserRoles.Remove(tb);

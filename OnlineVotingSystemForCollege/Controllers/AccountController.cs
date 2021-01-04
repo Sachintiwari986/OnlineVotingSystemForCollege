@@ -85,11 +85,12 @@ namespace OnlineVotingSystemForCollege.Controllers
                 var user = db.tblUsers.Where(a => a.UserName == username).FirstOrDefault();
                 if (user != null)
                 {
-                    if (user.Password == cp.OldPassword)
+                    var OldPassword = OnlineVotingSystemForCollege.Models.EncryptPassword.textToEncrypt(cp.OldPassword);
+                    if (user.Password == OldPassword)
                     {
                         if (cp.NewPassword == cp.ConfirmNew)
                         {
-                            user.Password = cp.NewPassword;
+                            user.Password = OnlineVotingSystemForCollege.Models.EncryptPassword.textToEncrypt(cp.NewPassword);
                             db.SaveChanges();
                             ViewBag.Message = "Password Changed";
 

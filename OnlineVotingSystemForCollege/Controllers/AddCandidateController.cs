@@ -60,10 +60,10 @@ namespace OnlineVotingSystemForCollege.Controllers
             tblElection tb = db.tblElections.Where(a => a.ElectionId == pvm.ElectionId).FirstOrDefault();
             tb.NoOfCandidate = candidatenum + 1;
                 db.tblCandidates.Add(tbl);
-          
-              
-                db.SaveChanges();
-            return View("AddCandidate");
+            db.SaveChanges();
+
+          return RedirectToAction("AddCandidate");
+        
             
 
 
